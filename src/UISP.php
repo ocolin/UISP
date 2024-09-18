@@ -56,6 +56,10 @@ class UISP
 ----------------------------------------------------------------------------- */
 
     /**
+     * @param string $path      Unaltered API path (including variable placeholders)
+     * @param string $method    HTTP method. Defaults to GET.
+     * @param array|null $data  Array of any parameters for the URI or body.
+     * @return object|array     Reply from server API.
      * @throws GuzzleException
      */
     public function path(
@@ -64,7 +68,10 @@ class UISP
         ?array $data   = null
     ) : object|array
     {
-        return $this->swagger->path( path: $path, data: $data );
+        return $this->swagger->path(
+              path: $path,
+            method: $method,
+              data: $data );
     }
 
 }
