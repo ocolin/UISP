@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6b55a761cfcb6df8b8c09e7a6ee0c1c",
+    "content-hash": "c545c10b5613a1f73628217fa60dbcb9",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -333,16 +333,16 @@
         },
         {
             "name": "ocolin/easy-swagger",
-            "version": "1.2.1",
+            "version": "1.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ocolin/EasySwagger.git",
-                "reference": "c2d133d189c2f6e183cf43059d0e179c08d51af7"
+                "reference": "66b90710ce12fa4ac7ceba970ece63a9e532ca0b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ocolin/EasySwagger/zipball/c2d133d189c2f6e183cf43059d0e179c08d51af7",
-                "reference": "c2d133d189c2f6e183cf43059d0e179c08d51af7",
+                "url": "https://api.github.com/repos/ocolin/EasySwagger/zipball/66b90710ce12fa4ac7ceba970ece63a9e532ca0b",
+                "reference": "66b90710ce12fa4ac7ceba970ece63a9e532ca0b",
                 "shasum": ""
             },
             "require": {
@@ -371,10 +371,10 @@
             ],
             "description": "Basic REST client that reads Swagger file",
             "support": {
-                "source": "https://github.com/ocolin/EasySwagger/tree/1.2.1",
+                "source": "https://github.com/ocolin/EasySwagger/tree/1.2.2",
                 "issues": "https://github.com/ocolin/EasySwagger/issues"
             },
-            "time": "2024-08-30T06:29:29+00:00"
+            "time": "2024-09-19T17:40:25+00:00"
         },
         {
             "name": "ocolin/easyenv",
@@ -923,16 +923,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.12.3",
+            "version": "1.12.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "0fcbf194ab63d8159bb70d9aa3e1350051632009"
+                "reference": "ffa517cb918591b93acc9b95c0bebdcd0e4538bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/0fcbf194ab63d8159bb70d9aa3e1350051632009",
-                "reference": "0fcbf194ab63d8159bb70d9aa3e1350051632009",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/ffa517cb918591b93acc9b95c0bebdcd0e4538bd",
+                "reference": "ffa517cb918591b93acc9b95c0bebdcd0e4538bd",
                 "shasum": ""
             },
             "require": {
@@ -977,7 +977,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-09-09T08:10:35+00:00"
+            "time": "2024-09-19T07:58:01+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1304,16 +1304,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.3.5",
+            "version": "11.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "4dc07a589a68f8f2d5132ac0849146d122e08347"
+                "reference": "d62c45a19c665bb872c2a47023a0baf41a98bb2b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/4dc07a589a68f8f2d5132ac0849146d122e08347",
-                "reference": "4dc07a589a68f8f2d5132ac0849146d122e08347",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/d62c45a19c665bb872c2a47023a0baf41a98bb2b",
+                "reference": "d62c45a19c665bb872c2a47023a0baf41a98bb2b",
                 "shasum": ""
             },
             "require": {
@@ -1340,7 +1340,7 @@
                 "sebastian/exporter": "^6.1.3",
                 "sebastian/global-state": "^7.0.2",
                 "sebastian/object-enumerator": "^6.0.1",
-                "sebastian/type": "^5.0.1",
+                "sebastian/type": "^5.1.0",
                 "sebastian/version": "^5.0.1"
             },
             "suggest": {
@@ -1384,7 +1384,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.3.5"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.3.6"
             },
             "funding": [
                 {
@@ -1400,7 +1400,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-09-13T05:22:17+00:00"
+            "time": "2024-09-19T10:54:28+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -2381,7 +2381,9 @@
     "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": ">=8.3"
+    },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"
 }

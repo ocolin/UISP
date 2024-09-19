@@ -65,7 +65,7 @@ class UISP
     public function path(
         string $path,
         string $method = 'get',
-        ?array $data   = null
+        ?array $data   = []
     ) : object|array
     {
         return $this->swagger->path(
