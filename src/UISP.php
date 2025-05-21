@@ -5,7 +5,7 @@ declare( strict_types = 1 );
 namespace Ocolin\UISP;
 
 use Exception;
-use Ocolin\Env\EasyEnv;
+use Ocolin\EasyEnv\LoadEnv;
 use Ocolin\EasySwagger\Swagger;
 
 class UISP
@@ -34,7 +34,7 @@ class UISP
            bool $local    = false
     ) {
         if( $local === true ) {
-            EasyEnv::loadEnv( path: __DIR__ . '/../.env' );
+            new LoadEnv( files: __DIR__ . '/../.env' );
         }
         $host     = $host     ?? $_ENV['UISP_HOST'];
         $base_uri = $base_uri ?? $_ENV['UISP_BASE_URI'];
