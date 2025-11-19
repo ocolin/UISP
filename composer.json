@@ -1,15 +1,16 @@
 {
     "name": "ocolin/uisp",
-    "description": "Swagger Wrapper for UISP client",
+    "description": "Basic UISP REST client",
     "type": "library",
     "require-dev": {
-        "phpunit/phpunit": "^12.0",
-        "phpstan/phpstan": "^2.0"
+        "phpunit/phpunit": "^12.4",
+        "phpstan/phpstan": "^2.1"
     },
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Ocolin\\UISP\\": "src/"
+            "Ocolin\\UISP\\": "src/",
+            "Ocolin\\UISP\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -20,7 +21,7 @@
     ],
     "require": {
         "php": ">=8.3",
-        "ocolin/easyenv": "^2.0",
-        "ocolin/easy-swagger": "^2.0"
+        "ocolin/easyenv": "^2.8",
+        "guzzlehttp/guzzle": "^7.10"
     }
 }
