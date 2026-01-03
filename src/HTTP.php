@@ -6,6 +6,7 @@ namespace Ocolin\UISP;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Query;
 use Ocolin\EasyEnv\Env;
 use Psr\Http\Message\ResponseInterface;
 
@@ -148,7 +149,7 @@ class HTTP
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
-        $options = [ 'query' => $this->query ];
+        $options = [ 'query' => Query::build( $this->query ) ];
 
         return $this->client->get( uri: $this->path, options: $options );
     }
@@ -244,6 +245,10 @@ class HTTP
             }
         }
     }
+
+
+/* FORMAT QUERY
+----------------------------------------------------------------------------- */
 
 
 
