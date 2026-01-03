@@ -146,9 +146,12 @@ class HTTP
         array|object|null $query = null,
     ) : ResponseInterface
     {
+        if( $query === null) { $query = []; }
+        if( is_object( $query ) ) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
+        // @phpstan-ignore-next-line - Mixed array should accept any array!
         $options = [ 'query' => Query::build( $this->query ) ];
 
         return $this->client->get( uri: $this->path, options: $options );
