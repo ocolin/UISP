@@ -79,7 +79,7 @@ class HTTP
 
     /**
      * @param string $path API end point path.
-     * @param array<string, string|int|float>|object|null $query Path and Query URI parameters.
+     * @param array<string, string|int|float|string[]>|object|null $query Path and Query URI parameters.
      * @param array<string, mixed>|object|null $body Body parameters for PUT/POST.
      * @return ResponseInterface Guzzle response object.
      * @throws GuzzleException
@@ -90,6 +90,8 @@ class HTTP
         array|object|null $body = null,
     ) : ResponseInterface
     {
+        if( $query === null) { $query = []; }
+        if( is_object( $query ) ) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
@@ -109,7 +111,7 @@ class HTTP
 
     /**
      * @param string $path API end point path.
-     * @param array<string, string|int|float>|object|null $query Path and Query URI parameters.
+     * @param array<string, string|int|float|string[]>|object|null $query Path and Query URI parameters.
      * @param array<string, mixed>|object|null $body Body parameters for PUT/POST.
      * @return ResponseInterface Guzzle response object.
      * @throws GuzzleException
@@ -120,6 +122,8 @@ class HTTP
         array|object|null $body = null,
     ) : ResponseInterface
     {
+        if( $query === null) { $query = []; }
+        if( is_object( $query ) ) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
@@ -137,7 +141,7 @@ class HTTP
 
     /**
      * @param string $path APi end point path.
-     * @param array<string, string|int|float>|object|null $query Path and Query URI parameters.
+     * @param array<string, string|int|float|string[]>|object|null $query Path and Query URI parameters.
      * @return ResponseInterface Guzzle response object.
      * @throws GuzzleException
      */
@@ -164,7 +168,7 @@ class HTTP
 
     /**
      * @param string $path API end point path.
-     * @param array<string, string|int|float>|object|null $query Path and Query URI parameters.
+     * @param array<string, string|int|float|string[]>|object|null $query Path and Query URI parameters.
      * @return ResponseInterface Guzzle response interface.
      * @throws GuzzleException
      */
@@ -173,6 +177,8 @@ class HTTP
         array|object|null $query = null,
     ) : ResponseInterface
     {
+        if( $query === null) { $query = []; }
+        if( is_object( $query ) ) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
@@ -188,7 +194,7 @@ class HTTP
 
     /**
      * @param string $path End point path.
-     * @param array<string, string|int|float>|object|null $query Params for path and query URI.
+     * @param array<string, string|int|float|string[]>|object|null $query Params for path and query URI.
      * @param array<string, mixed>|object|null $body Params for PUT body.
      * @return ResponseInterface Guzzle response interface.
      * @throws GuzzleException
@@ -199,6 +205,8 @@ class HTTP
         array|object|null $body = null,
     ) : ResponseInterface
     {
+        if( $query === null) { $query = []; }
+        if( is_object( $query ) ) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();

@@ -42,7 +42,7 @@ class Client
     /**
      * @param string $path API end point path.
      * @param string $method API HTTP method to use.
-     * @param array<string, string|int|float>|object|null $query Path and Query parameters.
+     * @param array<string, string|int|float|string[]>|object|null $query Path and Query parameters.
      * @param array<string, mixed>|object|null $body Body parameters for POST/PUT.
      * @return mixed Output of API service response.
      * @throws GuzzleException
@@ -71,7 +71,7 @@ class Client
     /**
      * @param string $path
      * @param string $method
-     * @param array<string, string|int|float>|object|null $query
+     * @param array<string, string|int|float|string[]>|object|null $query
      * @param array<string, mixed>|object|null $body
      * @return Response
      * @throws GuzzleException
