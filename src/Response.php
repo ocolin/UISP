@@ -17,9 +17,9 @@ class Response
      * @param mixed $body HTTP response body.
      */
     public function __construct(
-        public int $status,
+           public int $status,
         public string $statusMessage,
-        public array $headers,
-        public mixed $body,
+         public array $headers,
+         public mixed $body,
     ) {}
 }

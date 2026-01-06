@@ -4,11 +4,22 @@ declare( strict_types = 1 );
 
 namespace Ocolin\UISP;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
+use Psr\Http\Message\ResponseInterface;
 use GuzzleHttp\Psr7\Query;
 use Ocolin\EasyEnv\Env;
-use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Client;
+
+use function is_object;
+use function str_contains;
+use function gettype;
+use function is_int;
+use function is_string;
+use function is_float;
+use function is_bool;
+use function str_starts_with;
+use function str_ends_with;
+use function trim;
 
 class HTTP
 {
@@ -91,7 +102,7 @@ class HTTP
     ) : ResponseInterface
     {
         if( $query === null) { $query = []; }
-        if( is_object( $query ) ) { $query = (array)$query; }
+        if( is_object( value: $query )) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
@@ -123,7 +134,7 @@ class HTTP
     ) : ResponseInterface
     {
         if( $query === null) { $query = []; }
-        if( is_object( $query ) ) { $query = (array)$query; }
+        if( is_object( value: $query )) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
@@ -151,7 +162,7 @@ class HTTP
     ) : ResponseInterface
     {
         if( $query === null) { $query = []; }
-        if( is_object( $query ) ) { $query = (array)$query; }
+        if( is_object( value: $query )) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
@@ -178,7 +189,7 @@ class HTTP
     ) : ResponseInterface
     {
         if( $query === null) { $query = []; }
-        if( is_object( $query ) ) { $query = (array)$query; }
+        if( is_object( value: $query )) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
@@ -206,7 +217,7 @@ class HTTP
     ) : ResponseInterface
     {
         if( $query === null) { $query = []; }
-        if( is_object( $query ) ) { $query = (array)$query; }
+        if( is_object( value: $query ) ) { $query = (array)$query; }
         $this->query = $query;
         $this->path  = $path;
         $this->format_Path();
@@ -232,7 +243,7 @@ class HTTP
     {
         $this->trim_Path();
         if( empty( $this->query ) ) { return; }
-        if( is_object( value: $this->query ) ) { $this->query = (array)$this->query; }
+        if( is_object( value: $this->query )) { $this->query = (array)$this->query; }
         if( !str_contains( haystack: $this->path, needle: '{' ) ) { return ; }
 
         $allowed_types = [ 'string', 'integer', 'float', 'double' ];
@@ -242,13 +253,13 @@ class HTTP
                 str_contains( haystack: $this->path, needle: '{' . $name . '}' ) AND
                 (
                     is_string( value: $value ) OR
-                    is_int( value: $value ) OR
-                    is_float( value: $value ) OR
-                    is_bool( value: $value )
+                    is_int(    value: $value ) OR
+                    is_float(  value: $value ) OR
+                    is_bool(   value: $value )
                 )
             ) {
                 $this->path = str_replace(
-                    search: '{' . $name . '}',
+                     search: '{' . $name . '}',
                     replace: (string)$value,
                     subject: $this->path
                 );
@@ -256,10 +267,6 @@ class HTTP
             }
         }
     }
-
-
-/* FORMAT QUERY
------------------------------------------------------------------------------ */
 
 
 
@@ -275,7 +282,7 @@ class HTTP
     {
         if(
             str_starts_with( haystack: $this->path, needle: '/' ) AND
-            str_ends_with( haystack: $this->url, needle: '/' )
+            str_ends_with(   haystack: $this->url, needle: '/' )
         ) {
             $this->path =  trim( string: $this->path, characters: '/' );
         }
