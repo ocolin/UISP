@@ -2,77 +2,170 @@
 
 ## Description
 
-This is a basic REST client for a UISP server. Version 2 is not compatible with version 1.
+This UISP plugin is a lightweight PHP HTTP client specifically for Ubiquiti's UISP server. 
 
-This was designed with the mindset of copy/pasting from the API docs into your code. Copy/past the path from the docs, create simply arrays with parameters from the docs with your own values in them. No worrying about the HTTP or credentials work.
+It is designed so you don't have to worry about setting up or paying attention to any of the HTTP mechanism. All you need is to provide the endpoint, the method, and the data. 
+
+## Requirements
+
+- PHP >= 8.3
+- guzzlehttp/guzzle ^7.10
+- ocolin/globaltypes ^2.0
+
+## Installation
+
+```
+composer require ocolin/uisp
+```
+
+## Configuration
+
+### Environment Variable Configuration
+
+This plugin was designed to use environment variables for ease of use. You can use .env.example as a template for the variable names:
+
+|Variable| Description          | Example                              |
+|--------|----------------------|--------------------------------------|
+|UISP_API_TOKEN| Authentication token | 24a1a5eg-dfa9-5679-a51f-b9eg43c65862 |
+|UISP_API_URL| Server URI| https://myserver.com/nms/api/v2.1/   |
+
+### Instantiation Configuration
+
+The Client constructor can also take an array of optional information including the server URI and authentication token. Here are the optional configuration settings that can be used:
+
+|Name| Description                         | Default                |
+|----|-------------------------------------|------------------------|
+|base_uri| URI to API server| UISP_API_URL env var   |
+|token| Authentication token for API server | UISP_API_TOKEN env var |
+|timeout| HTTP timeout| 20 seconds             |
+|connect_timeout| Timeout for connection| 20 seconds             |
+|verify| Verify SSL connection| false                  |
+
 
 ## Usage
 
-### Environment variables
+### Concepts
 
-You can specify parameters in the constructor, but if any are left out, these environment variables will be used instead.
+Here are the arguments you need when making an API call:
 
-UISP_API_TOKEN - Authentication token for API
+- endpoint - Copy/paste the end point from your API docs. Any variables in the endpoint will be replaced with variables of the same name in your parameters.
+- method - You specify an HTTP methods. This is either done by choosing the method function name, or specifying the method name depending on which function call is used.
+- params - These are the variables that are used in the endpoint path and the HTTP body. Any parameters in the path will be removed from the body and used in the endpoint path.
+- query - Some HTTP methods like POST/PUT/PATCH may require HTTP query parameters in addition to the HTTP body. You can specify those query parameters with this argument.
 
-UISP_API_URL - URL of API server.
+Below you can find examples for each scenario.
 
-### Instantiate
+### Output
 
-Create an instance of the UISP object.
+Most methods will output an object with 4 properties:
 
-```
-$uisp = new Ocolin\UISP\Client();
-```
+|Property|Desdcription|Type|
+|--------|------------|----|
+|status|HTTP status numeric code|int|
+|statusMessage|HTTP text status|string|
+|headers|HTTP response headers|string[]|
+|body|API response data|mixed|
 
-#### Parameters
+The exception to this is the data() function which returns ONLY the HTTP body (See example below).
 
-$host: Name of the UISP host server. If null, will use .env field.
+### Instantiation
 
-$token: Authentication token for server. If null, will use .env field.
-
-$timeout: HTTP Timeout. Defaults to 20 seconds.
-
-$verify: Verify SSL credentials. Defaults to off.
-
-### Making a call
+#### Using Environment Variables
 
 ```php
-$output = $uisp->call( 
-     path: '/devices/airmaxes/{id}/config/wireless',
-    query: [
-        'id' => 'f700f200-f27f-442b-b086-c6ea128953b7',
-        'withStations' => 'true'
-    ] 
+// Manually creating for demonstration
+$_ENV['UISP_API_TOKEN'] = 'myauthtoken';
+$_ENV['UISP_API_URL']   = 'https://myserver.com/nms/api/v2.1/';
+
+$client = new Ocolin\UISP\Client();
+```
+
+#### Setting Options parameters
+
+```php
+$options = [
+    'base_uri' => 'https://myserver.com/nms/api/v2.1/',
+    'token'    => 'myauthtoken',
+    'timeout'  => 60
+];
+
+$client = new Ocolin\UISP\Client( options: $options );
+```
+### Method Calls
+
+#### GET
+
+Get data.
+
+```php
+$output = $client->get(
+    endpoint: '/devices/{id}',
+      params: [ 'id' => 'mydeviceidgoeshere-andreplacespathid']
 );
 ```
 
-This returns ONLY the HTTP body from the API server.
+#### POST
 
-#### Parameters
-
-$path: REQUIRED - Endpoint call path, including named parameters.
-
-$query: Array/object of parameters name/values to use for URI path or body.
-
-$method: HTTP method. Defaults to GET.
-
-$body: Array/object of parameters for PUT/POST/PATCH HTTP body.
-
-### Making a full call.
-
-This will return an object with 4 properties:
-
-* status - HTTP status code (200, 400, etc)
-* statusMessage - HTTP status message (OK, Bad Request, etc)
-* headers - HTTP response headers
-* body - HTTP response body
+Create data.
 
 ```php
-$output = $uisp->full(
-      path: '/sites',
-    method: 'POST',
-      body: [
-        'name' => 'Test Site',
-    ]   
-); 
+$output = $client->post(
+    endpoint: '/sites',
+      params: [ 'name' => 'My New Site' ]
+);
+```
+
+### PUT
+
+Update data.
+```php
+$output = $client->put(
+    endpoint: '/sites/{id}',
+      params: $site_object, // Object of a site from UISP
+       query: [ 'isComposeRequest' => 'true' ]
+);
+```
+
+### PATCH
+Update data. 
+```php
+$output = $client->patch(
+    endpoint: '/sites/{id}',
+      params: $site_object, // Object of a site from UISP
+       query: [ 'isComposeRequest' => 'true' ]
+);
+```
+
+### DELETE
+Delete data.
+```php
+$output = $client->delete(
+    endpoint: '/devices/{id}',
+      params: [ 'id' => 'mydeviceidgoeshere-andreplacespathid']
+);
+```
+
+### REQUEST
+
+Request is a more generic function where you specify the method rather than calling the specific method function.
+
+```php
+$output = $client->request(
+    endpoint: '/devices/{id}',
+      params: [ 'id' => 'mydeviceidgoeshere-andreplacespathid'],
+      method: 'GET'
+);
+```
+
+### DATA
+
+Data is much like the request() function, but it only returns the data. This is for situations where you don't need any of the other data and can assume problems based solely on the response body.
+
+```php
+// Output is mixed data type
+$output = $client->data(
+    endpoint: '/devices/{id}',
+      params: [ 'id' => 'mydeviceidgoeshere-andreplacespathid'],
+      method: 'GET'
+);
 ```
