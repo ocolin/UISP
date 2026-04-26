@@ -1,10 +1,31 @@
 # UISP
 
-## Description
-
 This UISP plugin is a lightweight PHP HTTP client specifically for Ubiquiti's UISP server. 
 
 It is designed so you don't have to worry about setting up or paying attention to any of the HTTP mechanism. All you need is to provide the endpoint, the method, and the data. 
+
+---
+
+## TOC
+
+- [Requirements](#Requirements)
+- [Installation](#Installation)
+- [Configuration](#Configuration)
+  - [Environment Variable Configuration](#Environment-Variable-Configuration)
+  - [Instantiation Configuration](#Instantiation-Configuration)
+- [Usage](#Usage)
+  - [Concepts](#Concepts)
+  - [Output](#Output)
+  - [Instantiation](#Instantiation)
+- [Method Calls](#Method-Calls)
+  - [GET](#GET)
+  - [POST](#POST)
+  - [PUT](#PUT)
+  - [PATCH](#PATCH)
+  - [DELETE](#DELETE)
+  - [REQUEST](#REQUEST)
+  - [DATA](#DATA)
+- [Fluent Interface](#Fluent-Interface)
 
 ## Requirements
 
@@ -12,11 +33,15 @@ It is designed so you don't have to worry about setting up or paying attention t
 - guzzlehttp/guzzle ^7.10
 - ocolin/globaltypes ^2.0
 
+---
+
 ## Installation
 
 ```
 composer require ocolin/uisp
 ```
+
+---
 
 ## Configuration
 
@@ -41,6 +66,7 @@ The Client constructor can also take an array of optional information including 
 |connect_timeout| Timeout for connection| 20 seconds             |
 |verify| Verify SSL connection| false                  |
 
+---
 
 ## Usage
 
@@ -91,9 +117,11 @@ $options = [
 
 $client = new Ocolin\UISP\Client( options: $options );
 ```
-### Method Calls
+---
 
-#### GET
+## Method Calls
+
+### GET
 
 Get data.
 
@@ -104,7 +132,7 @@ $output = $client->get(
 );
 ```
 
-#### POST
+### POST
 
 Create data.
 
@@ -169,3 +197,24 @@ $output = $client->data(
       method: 'GET'
 );
 ```
+---
+
+## Fluent Interface
+
+Another means of making API calls is using the Fluent/Chaining interface. Instead of providing an endpoint string, you can build an endpoint with functions.
+
+The last function of your call will be the HTTP method which will take the same arguments as running it directly, only without the endpoint string.
+
+Any endpoint segments using dashes can be specified using camel case.
+
+### Example
+
+```php
+$output = $client->airlink()->proxy()->airlink-be()->get();
+```
+
+Variable path parameters can be provided using the param() function. Notice the camel case to replicate "mac-table-refresh".
+```php
+$output = $client->deviced->param(123)->macTableRefresh()->get();
+```
+

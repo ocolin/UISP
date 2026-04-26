@@ -18,6 +18,7 @@ class Client
     /**
      * @param HTTP|null $http
      * @param array<string, string|int|float|bool> $options
+     * @method PathBuilder __call(string $name, array $args)
      */
     public function __construct( ?HTTP $http = null, array $options = [] )
     {
@@ -209,10 +210,25 @@ class Client
     private static function formatResponse( ResponseInterface $response ): Response
     {
         return new Response(
-            status: $response->getStatusCode(),
+                   status: $response->getStatusCode(),
             statusMessage: $response->getReasonPhrase(),
-            headers: $response->getHeaders(),
-            body: json_decode( json: $response->getBody()->getContents())
+                  headers: $response->getHeaders(),
+                     body: json_decode( json: $response->getBody()->getContents())
         );
     }
+
+
+/*
+----------------------------------------------------------------------------- */
+
+    /**
+     * @param string $method
+     * @param array<mixed> $args
+     * @return PathBuilder
+     */
+    public function __call( string $method, array $args = [] ): PathBuilder
+    {
+        return ( new PathBuilder( client: $this ))->__call( $method, $args );
+    }
+
 }
