@@ -15,6 +15,19 @@ class SiteTest extends TestCase
 
     private static object $site;
 
+
+
+    public function testMultiQueryParams() : void
+    {
+        $output = self::$client->get(
+            endpoint: '/devices',
+            params: [ 'type' => ['airMax', 'airFiber'] ]
+        );
+        $this->assertEquals( 200, $output->status );
+    }
+
+
+
     public function testCreateSite(): void
     {
         self::$site = self::$client->post(
