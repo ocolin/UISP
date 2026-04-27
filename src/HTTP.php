@@ -4,6 +4,7 @@ declare( strict_types = 1 );
 
 namespace Ocolin\UISP;
 
+use GuzzleHttp\Psr7\Query;
 use InvalidArgumentException;
 use Ocolin\GlobalType\ENV;
 use GuzzleHttp\Exception\GuzzleException;
@@ -199,8 +200,10 @@ class HTTP
             self::formatPath( path: $path, params: $params );
 
         $options = match( $method ) {
-            'GET', 'DELETE' => [ 'query' => $params ],
-            default         => [ 'json'  => $params, 'query' => $query ],
+            'GET', 'DELETE' => [ 'query' => Query::build( $params ) ],
+            default         => [
+                'json'  => $params, 'query' => Query::build( (array)$query )
+            ],
         };
 
         return $this->client->request( method: $method, uri: $path, options: $options );
