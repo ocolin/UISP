@@ -25,7 +25,7 @@ class ClientTest extends TestCase
             ->method( 'get' )
             ->with(
                 endpoint: '/sites/{id}',
-                params: [ 'id' => 'abc' ]
+                query: [ 'id' => 'abc' ]
             )
             ->willReturn( $mockResponse );
 
@@ -33,7 +33,7 @@ class ClientTest extends TestCase
         $client = new Client( http: $mockHttp );
 
         // 4. Call the method and assert
-        $result = $client->get( endpoint: '/sites/{id}', params: [ 'id' => 'abc' ] );
+        $result = $client->get( endpoint: '/sites/{id}', query: [ 'id' => 'abc' ] );
 
         $this->assertInstanceOf( Response::class, $result );
         //$this->assertEquals( 200, $result->status );
@@ -125,7 +125,7 @@ class ClientTest extends TestCase
             ->method( 'delete' )
             ->with(
                 endpoint: '/sites/{id}',
-                params: [ 'id' => 'abc' ]
+                query: [ 'id' => 'abc' ]
             )
             ->willReturn( $mockResponse );
 
@@ -133,7 +133,7 @@ class ClientTest extends TestCase
         $client = new Client( http: $mockHttp );
 
         // 4. Call the method and assert
-        $result = $client->delete( endpoint: '/sites/{id}', params: [ 'id' => 'abc' ] );
+        $result = $client->delete( endpoint: '/sites/{id}', query: [ 'id' => 'abc' ] );
 
         $this->assertInstanceOf( Response::class, $result );
         //$this->assertEquals( 200, $result->status );

@@ -72,13 +72,13 @@ class HTTP
      * Send HTTP GET request.
      *
      * @param string $endpoint API end point to call.
-     * @param array<string, mixed>|object $params Query and/or body parameters.
+     * @param array<string, mixed>|object $query Query and/or body parameters.
      * @return ResponseInterface HTTP response object.
      * @throws GuzzleException
      */
-    public function get( string $endpoint, array|object $params = [] ) : ResponseInterface
+    public function get( string $endpoint, array|object $query = [] ) : ResponseInterface
     {
-        return $this->send( path: $endpoint, params: $params );
+        return $this->send( path: $endpoint, query: $query );
     }
 
 
@@ -90,13 +90,13 @@ class HTTP
      * HTTP DELETE request.
      *
      * @param string $endpoint API end point to call.
-     * @param array<string, mixed>|object $params Query and/or body parameters.
+     * @param array<string, mixed>|object $query Query and/or body parameters.
      * @return ResponseInterface HTTP response object.
      * @throws GuzzleException
      */
-    public function delete( string $endpoint, array|object $params = [] ) : ResponseInterface
+    public function delete( string $endpoint, array|object $query = [] ) : ResponseInterface
     {
-        return $this->send( path: $endpoint, method: 'DELETE', params: $params );
+        return $this->send( path: $endpoint, method: 'DELETE', query: $query );
     }
 
 
@@ -144,7 +144,7 @@ class HTTP
         array|object $query = [],
     ) : ResponseInterface
     {
-        return $this->send( path: $endpoint, method: 'PUT', params: $params );
+        return $this->send( path: $endpoint, method: 'PUT', params: $params, query: $query );
     }
 
 
@@ -195,16 +195,20 @@ class HTTP
     ) : ResponseInterface
     {
         if( is_object( $params )) { $params = (array)$params; }
-        if( is_object( $query )) { $params = (array)$query; }
-        [ 'path' => $path, 'params' => $params ] =
-            self::formatPath( path: $path, params: $params );
+        if( is_object( $query )) { $query = (array)$query; }
+        [ 'path' => $path, 'query' => $query ] =
+            self::formatPath( path: $path, query: $query );
 
-        $options = match( $method ) {
-            'GET', 'DELETE' => [ 'query' => Query::build( $params ) ],
-            default         => [
-                'json'  => $params, 'query' => Query::build( (array)$query )
-            ],
-        };
+        array_walk( $query, function( &$value ) {
+            if( is_bool( $value )) {
+                $value = $value ? 'true' : 'false';
+            }
+        });
+
+        $options = [];
+
+        if( !empty( $params )) { $options['json'] = $params; }
+        if( !empty( $query )) { $options['query'] = Query::build( $query ); }
 
         return $this->client->request( method: $method, uri: $path, options: $options );
     }
@@ -218,21 +222,21 @@ class HTTP
      * Format the API URI path and insert variables.
      *
      * @param string $path
-     * @param array<string, mixed> $params
-     * @return array{ path: string, params: array<string, mixed> }
+     * @param array<string, mixed> $query
+     * @return array{ path: string, query: array<string, mixed> }
      */
-    private static function formatPath( string $path, array $params ) : array
+    private static function formatPath( string $path, array $query ) : array
     {
         $output = [ 'path'   => '' ];
         $path = ltrim( string: $path, characters: '/' );
 
         if( !str_contains( haystack: $path, needle: '{' )) {
             $output['path']  .= $path;
-            $output['params'] = $params;
+            $output['query'] = $query;
             return $output;
         }
 
-        foreach( $params as $key => $value ) {
+        foreach( $query as $key => $value ) {
             if(
                 str_contains( haystack: $path, needle: '{' . $key . '}' ) AND
                 (
@@ -246,12 +250,12 @@ class HTTP
                     replace: (string)$value,
                     subject: $path
                 );
-                unset( $params[$key] );
+                unset( $query[$key] );
             }
         }
 
         $output['path']  .= $path;
-        $output['params'] = $params;
+        $output['query'] = $query;
 
         return $output;
     }

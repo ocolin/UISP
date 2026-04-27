@@ -76,8 +76,8 @@ Here are the arguments you need when making an API call:
 
 - endpoint - Copy/paste the end point from your API docs. Any variables in the endpoint will be replaced with variables of the same name in your parameters.
 - method - You specify an HTTP methods. This is either done by choosing the method function name, or specifying the method name depending on which function call is used.
-- params - These are the variables that are used in the endpoint path and the HTTP body. Any parameters in the path will be removed from the body and used in the endpoint path.
-- query - Some HTTP methods like POST/PUT/PATCH may require HTTP query parameters in addition to the HTTP body. You can specify those query parameters with this argument.
+- params - These are the variables that are used in the HTTP body. Not used for GET or DELETE.
+- query - Path and query parameters. Any property names that match variable tokens in your path will be removed and inserted into your path name. See GET example below.
 
 Below you can find examples for each scenario.
 
@@ -126,9 +126,10 @@ $client = new Ocolin\UISP\Client( options: $options );
 Get data.
 
 ```php
+// {id} will be replaced with 6c2f7697-8c5c-43df-9873-d8819d76a2d2
 $output = $client->get(
     endpoint: '/devices/{id}',
-      params: [ 'id' => 'mydeviceidgoeshere-andreplacespathid']
+       query: [ 'id' => '6c2f7697-8c5c-43df-9873-d8819d76a2d2']
 );
 ```
 
@@ -150,7 +151,7 @@ Update data.
 $output = $client->put(
     endpoint: '/sites/{id}',
       params: $site_object, // Object of a site from UISP
-       query: [ 'isComposeRequest' => 'true' ]
+       query: [ 'isComposeRequest' => 'true', 'id' => '6c2f7697-8c5c-43df-9873-d8819d76a2d2' ]
 );
 ```
 
@@ -160,7 +161,7 @@ Update data.
 $output = $client->patch(
     endpoint: '/sites/{id}',
       params: $site_object, // Object of a site from UISP
-       query: [ 'isComposeRequest' => 'true' ]
+       query: [ 'isComposeRequest' => 'true', 'id' => '6c2f7697-8c5c-43df-9873-d8819d76a2d2'  ]
 );
 ```
 
@@ -169,7 +170,7 @@ Delete data.
 ```php
 $output = $client->delete(
     endpoint: '/devices/{id}',
-      params: [ 'id' => 'mydeviceidgoeshere-andreplacespathid']
+      query: [ 'id' => '6c2f7697-8c5c-43df-9873-d8819d76a2d2']
 );
 ```
 
@@ -180,7 +181,7 @@ Request is a more generic function where you specify the method rather than call
 ```php
 $output = $client->request(
     endpoint: '/devices/{id}',
-      params: [ 'id' => 'mydeviceidgoeshere-andreplacespathid'],
+       query: [ 'id' => '6c2f7697-8c5c-43df-9873-d8819d76a2d2'],
       method: 'GET'
 );
 ```
@@ -193,7 +194,7 @@ Data is much like the request() function, but it only returns the data. This is 
 // Output is mixed data type
 $output = $client->data(
     endpoint: '/devices/{id}',
-      params: [ 'id' => 'mydeviceidgoeshere-andreplacespathid'],
+       query: [ 'id' => '6c2f7697-8c5c-43df-9873-d8819d76a2d2'],
       method: 'GET'
 );
 ```
