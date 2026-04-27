@@ -73,15 +73,15 @@ class PathBuilder
     /**
      * Execute GET method.
      *
-     * @param array<string, mixed>|object $params Query parameters.
+     * @param array<string, mixed>|object $query Query parameters.
      * @return Response API client response object.
      * @throws GuzzleException HTTP errors.
      */
-    public function get( array|object $params = [] ) : Response
+    public function get( array|object $query = [] ) : Response
     {
         $endpoint = $this->buildEndpoint();
 
-        return $this->client->get( endpoint: $endpoint, params: $params );
+        return $this->client->get( endpoint: $endpoint, query: $query );
     }
 
 
@@ -92,15 +92,15 @@ class PathBuilder
     /**
      * Execute DELETE method.
      *
-     * @param array<string, mixed>|object $params Delete query parameters.
+     * @param array<string, mixed>|object $query Delete query parameters.
      * @return Response API client response object.
      * @throws GuzzleException HTTP errors.
      */
-    public function delete( array|object $params = [] ) : Response
+    public function delete( array|object $query = [] ) : Response
     {
         $endpoint = $this->buildEndpoint();
 
-        return $this->client->delete( endpoint: $endpoint, params: $params );
+        return $this->client->delete( endpoint: $endpoint, query: $query );
     }
 
 

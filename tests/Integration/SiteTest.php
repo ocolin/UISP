@@ -16,18 +16,6 @@ class SiteTest extends TestCase
     private static object $site;
 
 
-
-    public function testMultiQueryParams() : void
-    {
-        $output = self::$client->get(
-            endpoint: '/devices',
-            params: [ 'type' => ['airMax', 'airFiber'] ]
-        );
-        $this->assertEquals( 200, $output->status );
-    }
-
-
-
     public function testCreateSite(): void
     {
         self::$site = self::$client->post(
@@ -45,6 +33,29 @@ class SiteTest extends TestCase
         );
     }
 
+    /** @depends testCreateSite */
+    public function testGetSite(): void
+    {
+        $output = self::$client->get(
+            endpoint: '/sites/{id}',
+            query: [ 'id' => self::$siteId ]
+        );
+        $this->assertEquals( 200, $output->status );
+        $this->assertIsObject( $output );
+        $this->assertObjectHasProperty( 'body', $output );
+        $this->assertIsObject( $output->body );
+        $this->assertObjectHasProperty( 'id', $output->body );
+        $this->assertEquals( self::$siteId, $output->body->id );
+    }
+
+    public function testMultiQueryParams() : void
+    {
+        $output = self::$client->get(
+            endpoint: '/devices',
+            query: [ 'type' => ['airMax', 'airFiber'], 'role' => ['ptp', 'router'] ]
+        );
+        $this->assertEquals( 200, $output->status );
+    }
 
 
     /** @depends testCreateSite */
@@ -53,8 +64,10 @@ class SiteTest extends TestCase
         self::$site->body->identification->name = 'PHPUnit UPDATE Site';
         $output = self::$client->put(
             endpoint: '/sites/{id}',
-            params: self::$site->body
+            params: self::$site->body,
+            query: [ 'id' => self::$siteId ]
         );
+        //print_r( $output );
         $this->assertEquals( 200, self::$site->status );
         $this->assertIsObject( $output );
         $this->assertObjectHasProperty( 'body', $output );
@@ -67,29 +80,13 @@ class SiteTest extends TestCase
 
 
 
-    /** @depends testCreateSite */
-    public function testGetSite(): void
-    {
-        $output = self::$client->get(
-            endpoint: '/sites/{id}',
-            params: [ 'id' => self::$siteId ]
-        );
-        $this->assertEquals( 200, self::$site->status );
-        $this->assertIsObject( $output );
-        $this->assertObjectHasProperty( 'body', $output );
-        $this->assertIsObject( $output->body );
-        $this->assertObjectHasProperty( 'id', $output->body );
-        $this->assertEquals( self::$siteId, $output->body->id );
-    }
-
-
 
     /** @depends testCreateSite */
     public function testDeleteSite(): void
     {
         $output = self::$client->delete(
             endpoint: '/sites/{id}',
-              params: [ 'id' => self::$siteId ]
+              query: [ 'id' => self::$siteId ]
         );
         $this->assertEquals( 200, self::$site->status );
         $this->assertIsObject( $output );
@@ -99,6 +96,7 @@ class SiteTest extends TestCase
         $this->assertEquals( true, $output->body->result );
     }
 
+
     public static function setUpBeforeClass(): void
     {
         self::$client = new Client();
@@ -106,13 +104,15 @@ class SiteTest extends TestCase
 
     public static function tearDownAfterClass(): void
     {
+
         if( self::$siteId !== null ) {
             self::$client->delete(
                 endpoint: '/sites/{id}',
-                params: [ 'id' => self::$siteId ]
+                query: [ 'id' => self::$siteId ]
             );
         }
         self::$siteId = null;
+
     }
 }
 

@@ -32,17 +32,17 @@ class Client
 
     /**
      * @param string $endpoint API end point.
-     * @param array<string, mixed>|object $params Query parameters.
+     * @param array<string, mixed>|object $query Query parameters.
      * @return Response HTTP response object.
      * @throws GuzzleException
      */
     public function get(
                string $endpoint,
-         array|object $params = [],
+         array|object $query = [],
     ) : Response
     {
         return self::formatResponse(
-            $this->http->get( endpoint: $endpoint, params: $params )
+            $this->http->get( endpoint: $endpoint, query: $query )
         );
     }
 
@@ -53,17 +53,17 @@ class Client
 
     /**
      * @param string $endpoint API end point.
-     * @param array<string, mixed>|object $params Query parameters.
+     * @param array<string, mixed>|object $query Query parameters.
      * @return Response HTTP response object.
      * @throws GuzzleException
      */
     public function delete(
               string $endpoint,
-        array|object $params = [],
+        array|object $query = [],
     ) : Response
     {
         return self::formatResponse(
-            $this->http->delete( endpoint: $endpoint, params: $params )
+            $this->http->delete( endpoint: $endpoint, query: $query )
         );
     }
 
